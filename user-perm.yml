@@ -1,0 +1,96 @@
+- generic [ref=e36]:
+  - complementary [ref=e37]:
+    - generic [ref=e38]: 架构管理系统 AMS
+    - menubar [ref=e39]:
+      - menuitem "首页" [ref=e40] [cursor=pointer]:
+        - img [ref=e42]
+        - text: 首页
+      - menuitem "系统清单" [ref=e45] [cursor=pointer]:
+        - img [ref=e47]
+        - text: 系统清单
+      - menuitem "技术栈管理" [ref=e49] [cursor=pointer]:
+        - img [ref=e51]
+        - text: 技术栈管理
+      - menuitem "逻辑部署架构图" [ref=e56] [cursor=pointer]:
+        - img [ref=e58]
+        - text: 逻辑部署架构图
+      - menuitem "调用关系管理" [ref=e61] [cursor=pointer]:
+        - img [ref=e63]
+        - text: 调用关系管理
+      - menuitem "用户权限" [active] [ref=e65] [cursor=pointer]:
+        - img [ref=e67]
+        - text: 用户权限
+  - generic [ref=e69]:
+    - generic [ref=e70]:
+      - generic [ref=e71]:
+        - img [ref=e73] [cursor=pointer]
+        - navigation "Breadcrumb" [ref=e75]:
+          - generic [ref=e76]:
+            - link "首页" [ref=e77]
+            - text: /
+          - link "User" [ref=e123]
+      - button "admin" [ref=e82] [cursor=pointer]:
+        - text: admin
+        - img [ref=e84]
+    - main [ref=e86]:
+      - generic [ref=e124]: 用户权限管理
+      - generic [ref=e126]:
+        - generic [ref=e127]:
+          - textbox "用户名" [ref=e130]
+          - generic [ref=e132] [cursor=pointer]:
+            - generic:
+              - combobox [ref=e134]
+              - generic [ref=e135]: 全部角色
+            - img [ref=e138]
+          - button "查询" [ref=e140] [cursor=pointer]:
+            - img [ref=e142]
+            - generic [ref=e144]: 查询
+          - button "重置" [ref=e145] [cursor=pointer]:
+            - img [ref=e147]
+            - generic [ref=e149]: 重置
+        - button "+ 新增用户" [ref=e151] [cursor=pointer]:
+          - generic [ref=e152]: + 新增用户
+        - generic [ref=e154]:
+          - table [ref=e156]:
+            - rowgroup [ref=e162]:
+              - row "用户名 角色 创建时间 操作" [ref=e163]:
+                - columnheader "用户名" [ref=e164]:
+                  - generic [ref=e165]: 用户名
+                - columnheader "角色" [ref=e166]:
+                  - generic [ref=e167]: 角色
+                - columnheader "创建时间" [ref=e168]:
+                  - generic [ref=e169]: 创建时间
+                - columnheader "操作" [ref=e170]:
+                  - generic [ref=e171]: 操作
+          - table [ref=e176]:
+            - rowgroup [ref=e182]:
+              - row "admin 2026-05-14 10:13:16 编辑 删除" [ref=e183]:
+                - cell "admin" [ref=e184]:
+                  - generic [ref=e185]: admin
+                - cell [ref=e186]
+                - cell "2026-05-14 10:13:16" [ref=e189]:
+                  - generic [ref=e190]: 2026-05-14 10:13:16
+                - cell "编辑 删除" [ref=e191]:
+                  - generic [ref=e192]:
+                    - button "编辑" [ref=e193] [cursor=pointer]:
+                      - generic [ref=e194]: 编辑
+                    - button "删除" [ref=e195] [cursor=pointer]:
+                      - generic [ref=e196]: 删除
+        - generic [ref=e198]:
+          - generic [ref=e199]: Total 1
+          - generic [ref=e202] [cursor=pointer]:
+            - generic:
+              - combobox [ref=e204]
+              - generic [ref=e205]: 20/page
+            - img [ref=e208]
+          - button "Go to previous page" [disabled] [ref=e210]:
+            - generic:
+              - img
+          - list [ref=e211]:
+            - listitem "page 1" [ref=e212]: "1"
+          - button "Go to next page" [disabled] [ref=e213]:
+            - generic:
+              - img
+          - generic [ref=e214]:
+            - generic [ref=e215]: Go to
+            - spinbutton "Page" [ref=e218]: "1"

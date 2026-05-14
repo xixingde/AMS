@@ -1,0 +1,58 @@
+- generic [ref=e36]:
+  - complementary [ref=e37]:
+    - generic [ref=e38]: 架构管理系统 AMS
+    - menubar [ref=e39]:
+      - menuitem "首页" [ref=e40] [cursor=pointer]:
+        - img [ref=e42]
+        - text: 首页
+      - menuitem "系统清单" [ref=e45] [cursor=pointer]:
+        - img [ref=e47]
+        - text: 系统清单
+      - menuitem "技术栈管理" [ref=e49] [cursor=pointer]:
+        - img [ref=e51]
+        - text: 技术栈管理
+      - menuitem "逻辑部署架构图" [ref=e56] [cursor=pointer]:
+        - img [ref=e58]
+        - text: 逻辑部署架构图
+      - menuitem "调用关系管理" [ref=e61] [cursor=pointer]:
+        - img [ref=e63]
+        - text: 调用关系管理
+      - menuitem "用户权限" [ref=e65] [cursor=pointer]:
+        - img [ref=e67]
+        - text: 用户权限
+  - generic [ref=e69]:
+    - generic [ref=e70]:
+      - generic [ref=e71]:
+        - img [ref=e73] [cursor=pointer]
+        - navigation "Breadcrumb" [ref=e75]:
+          - generic [ref=e76]:
+            - link "首页" [ref=e77]
+            - text: /
+          - link "Dashboard" [ref=e79]
+      - button "admin" [ref=e82] [cursor=pointer]:
+        - text: admin
+        - img [ref=e84]
+    - main [ref=e86]:
+      - generic [ref=e87]: 首页
+      - generic [ref=e88]:
+        - generic [ref=e90]:
+          - generic [ref=e91]: "0"
+          - generic [ref=e92]: 系统总数
+        - generic [ref=e94]:
+          - generic [ref=e95]: "0"
+          - generic [ref=e96]: 子系统总数
+        - generic [ref=e98]:
+          - generic [ref=e99]: "0"
+          - generic [ref=e100]: 发布单元总数
+        - generic [ref=e102]:
+          - generic [ref=e103]: "0"
+          - generic [ref=e104]: 技术栈总数
+      - generic [ref=e105]:
+        - generic [ref=e106]: 快捷入口
+        - generic [ref=e108]:
+          - button "进入系统清单" [ref=e110] [cursor=pointer]:
+            - generic [ref=e111]: 进入系统清单
+          - button "进入技术栈管理" [ref=e113] [cursor=pointer]:
+            - generic [ref=e114]: 进入技术栈管理
+          - button "查看架构图" [ref=e116] [cursor=pointer]:
+            - generic [ref=e117]: 查看架构图

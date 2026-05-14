@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>架构管理系统 AMS</title>
+<style>
+:root{
+  --primary:#409EFF;--primary-light:#ecf5ff;--success:#67C23A;--warning:#E6A23C;--danger:#F56C6C;--info:#909399;
+  --bg-page:#f0f2f5;--bg-content:#fff;--bg-card:#fff;--bg-hover:#f5f7fa;
+  --text-title:#303133;--text-body:#606266;--text-aid:#909399;--text-disabled:#C0C4CC;
+  --spacer-xs:4px;--spacer-sm:8px;--spacer-md:16px;--spacer-lg:24px;--spacer-xl:32px;
+  --radius-none:0;--radius-sm:2px;--radius-md:4px;--radius-lg:8px;--radius-full:9999px;
+  --shadow-none:none;--shadow-light:0 1px 4px rgba(0,0,0,.08);--shadow-medium:0 2px 12px rgba(0,0,0,.1);--shadow-deep:0 4px 24px rgba(0,0,0,.12);
+  --sidebar-width:220px;--header-height:56px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;background:var(--bg-page);color:var(--text-body);font-size:14px;line-height:1.5}
+a{color:var(--primary);text-decoration:none}
+button{cursor:pointer;border:none;background:none;font-size:14px}
+.btn{padding:8px 16px;border-radius:var(--radius-md);transition:.2s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:#66b1ff}
+.btn-success{background:var(--success);color:#fff}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-default{border:1px solid #dcdfe6;background:#fff;color:var(--text-body)}
+.btn-sm{padding:6px 12px;font-size:13px}
+.tag{display:inline-block;padding:2px 8px;border-radius:var(--radius-sm);font-size:12px}
+.tag-blue{background:var(--primary-light);color:var(--primary)}
+.tag-green{background:#f0f9eb;color:var(--success)}
+.tag-red{background:#fef0f0;color:var(--danger)}
+.tag-gray{background:#f4f4f5;color:var(--info)}
+.card{background:var(--bg-card);border-radius:var(--radius-lg);box-shadow:var(--shadow-light);padding:var(--spacer-md)}
+.form-item{margin-bottom:var(--spacer-md)}
+.form-item label{display:block;margin-bottom:var(--spacer-xs);color:var(--text-title);font-weight:500}
+.form-item input,.form-item select{width:100%;padding:8px 12px;border:1px solid #dcdfe6;border-radius:var(--radius-md);font-size:14px}
+.form-item input:focus,.form-item select:focus{outline:none;border-color:var(--primary)}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px 16px;text-align:left;border-bottom:1px solid #ebeef5}
+th{background:#f8f9fb;color:var(--text-title);font-weight:600;font-size:13px}
+tr:hover{background:var(--bg-hover)}
+.pagination{display:flex;justify-content:flex-end;align-items:center;gap:var(--spacer-sm);margin-top:var(--spacer-md)}
+.pagination button{padding:6px 12px;border:1px solid #dcdfe6;background:#fff;border-radius:var(--radius-md)}
+.pagination button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.mask{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none}
+.dialog{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-deep);z-index:101;width:560px;max-width:90vw;display:none;flex-direction:column;max-height:80vh}
+.dialog-header{padding:var(--spacer-md);border-bottom:1px solid #ebeef5;font-weight:600;color:var(--text-title);display:flex;justify-content:space-between;align-items:center}
+.dialog-body{padding:var(--spacer-md);overflow:auto}
+.dialog-footer{padding:var(--spacer-md);border-top:1px solid #ebeef5;display:flex;justify-content:flex-end;gap:var(--spacer-sm)}
+.drawer{position:fixed;top:0;right:0;width:480px;max-width:90vw;height:100%;background:#fff;box-shadow:var(--shadow-deep);z-index:101;display:none;flex-direction:column}
+.drawer-header{padding:var(--spacer-md);border-bottom:1px solid #ebeef5;font-weight:600;color:var(--text-title);display:flex;justify-content:space-between;align-items:center}
+.drawer-body{padding:var(--spacer-md);overflow:auto;flex:1}
+.tabs{display:flex;border-bottom:2px solid #e4e7ed;margin-bottom:var(--spacer-md)}
+.tab{padding:10px 20px;cursor:pointer;color:var(--text-aid);border-bottom:2px solid transparent;margin-bottom:-2px}
+.tab.active{color:var(--primary);border-color:var(--primary)}
+.empty{padding:40px;text-align:center;color:var(--text-aid)}
+.alert{padding:10px 16px;border-radius:var(--radius-md);margin-bottom:var(--spacer-md)}
+.alert-info{background:var(--primary-light);color:var(--primary)}
+/* layout */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar-width);background:#001529;color:#fff;position:fixed;inset:0 auto 0 0;transition:width .3s;overflow:hidden}
+.sidebar.collapsed{width:64px}
+.logo{height:var(--header-height);display:flex;align-items:center;padding:0 var(--spacer-md);font-size:16px;font-weight:600;white-space:nowrap}
+.menu-item{padding:12px var(--spacer-md);cursor:pointer;white-space:nowrap;transition:.2s;display:flex;align-items:center;gap:var(--spacer-sm)}
+.menu-item:hover,.menu-item.active{background:var(--primary)}
+.menu-item .icon{width:20px;text-align:center}
+.main{margin-left:var(--sidebar-width);flex:1;display:flex;flex-direction:column;transition:margin-left .3s}
+.sidebar.collapsed+.main{margin-left:64px}
+.header{height:var(--header-height);background:#fff;box-shadow:var(--shadow-light);display:flex;align-items:center;justify-content:space-between;padding:0 var(--spacer-md);position:sticky;top:0;z-index:10}
+.header-left{display:flex;align-items:center;gap:var(--spacer-md)}
+.toggle{font-size:18px;color:var(--text-title);cursor:pointer}
+.breadcrumb{color:var(--text-aid);font-size:13px}
+.header-right{display:flex;align-items:center;gap:var(--spacer-md)}
+.user{cursor:pointer}
+.content{padding:var(--spacer-md);flex:1}
+.page-title{font-size:20px;font-weight:600;color:var(--text-title);margin-bottom:var(--spacer-md)}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--spacer-md)}
+.search-area{display:flex;gap:var(--spacer-sm);flex-wrap:wrap;margin-bottom:var(--spacer-md)}
+.search-area input,.search-area select{width:180px}
+.mermaid-box{background:#fafafa;border:1px dashed #dcdfe6;border-radius:var(--radius-md);padding:var(--spacer-lg);min-height:320px;display:flex;align-items:center;justify-content:center;color:var(--text-aid)}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--spacer-md);margin-bottom:var(--spacer-lg)}
+.stat-card{padding:var(--spacer-lg);border-radius:var(--radius-lg);background:var(--bg-card);box-shadow:var(--shadow-light)}
+.stat-value{font-size:28px;font-weight:700;color:var(--text-title)}
+.stat-label{color:var(--text-aid);margin-top:var(--spacer-xs)}
+.login-box{width:420px;margin:10vh auto;background:#fff;padding:var(--spacer-xl);border-radius:var(--radius-lg);box-shadow:var(--shadow-medium)}
+.login-title{text-align:center;font-size:24px;margin-bottom:var(--spacer-lg);color:var(--text-title)}
+.mt-2{margin-top:var(--spacer-sm)}
+.mt-3{margin-top:var(--spacer-md)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const state={page:'login',sidebar:true,role:'admin',dialog:null,drawer:null,tab:'system'};
+const menus=[
+  {key:'dashboard',label:'首页',icon:'◈'},
+  {key:'system',label:'系统清单',icon:'▦'},
+  {key:'techstack',label:'技术栈管理',icon:'⚙'},
+  {key:'diagram',label:'逻辑部署架构图',icon:'▣'},
+  {key:'relation',label:'调用关系管理',icon:'⇄'},
+  {key:'user',label:'用户权限',icon:'⚉'}
+];
+const tabs=[{key:'system',label:'系统'},{key:'subsystem',label:'子系统'},{key:'deploy',label:'部署子系统'},{key:'release',label:'发布单元'}];
+function $(s){return document.querySelector(s)}
+function render(){
+  const app=$('#app');
+  if(state.page==='login'){app.innerHTML=renderLogin();bindLogin();return}
+  app.innerHTML=renderLayout();
+  bindNav();
+  const content=$('#page-content');
+  if(content)switch(state.page){
+    case 'dashboard':content.innerHTML=renderDashboard();break;
+    case 'system':content.innerHTML=renderSystem();break;
+    case 'techstack':content.innerHTML=renderTechStack();break;
+    case 'diagram':content.innerHTML=renderDiagram();break;
+    case 'relation':content.innerHTML=renderRelation();break;
+    case 'user':content.innerHTML=renderUser();break;
+    default:content.innerHTML=renderDashboard();
+  }
+  bindActions();
+}
+function renderLogin(){return `<div class="login-box"><div class="login-title">架构管理系统 AMS</div><div class="form-item"><label>用户名</label><input id="l-user" placeholder="请输入用户名" value="admin"></div><div class="form-item"><label>密码</label><input id="l-pass" type="password" placeholder="请输入密码" value="******"></div><button class="btn btn-primary" style="width:100%;margin-top:12px" id="btn-login">登录</button></div>`}
+function renderLayout(){return `<div class="layout"><aside class="sidebar${state.sidebar?'':' collapsed'}"><div class="logo">${state.sidebar?'架构管理系统 AMS':'AMS'}</div><nav>${menus.map(m=>`<div class="menu-item${state.page===m.key?' active':''}" data-key="${m.key}"><span class="icon">${m.icon}</span>${state.sidebar?m.label:''}</div>`).join('')}</nav></aside><div class="main"><header class="header"><div class="header-left"><span class="toggle" id="toggle">☰</span><span class="breadcrumb">首页 / ${(menus.find(m=>m.key===state.page)||{}).label||''}</span></div><div class="header-right"><span class="user">管理员 ▾</span></div></header><div class="content" id="page-content"></div></div></div><div class="mask" id="mask"></div><div class="dialog" id="dialog"><div class="dialog-header"><span id="dialog-title">标题</span><span style="cursor:pointer" id="dialog-close">✕</span></div><div class="dialog-body" id="dialog-body"></div><div class="dialog-footer" id="dialog-footer"></div></div><div class="drawer" id="drawer"><div class="drawer-header"><span id="drawer-title">标题</span><span style="cursor:pointer" id="drawer-close">✕</span></div><div class="drawer-body" id="drawer-body"></div></div>`}
+function renderDashboard(){return `<div class="page-title">首页</div><div class="stat-grid"><div class="stat-card"><div class="stat-value">12</div><div class="stat-label">系统总数</div></div><div class="stat-card"><div class="stat-value">38</div><div class="stat-label">子系统总数</div></div><div class="stat-card"><div class="stat-value">56</div><div class="stat-label">发布单元总数</div></div><div class="stat-card"><div class="stat-value">24</div><div class="stat-label">技术栈总数</div></div></div><div class="card"><div style="font-weight:600;color:var(--text-title);margin-bottom:12px">快捷入口</div><div style="display:flex;gap:12px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="go('system')">进入系统清单</button><button class="btn btn-primary btn-sm" onclick="go('techstack')">进入技术栈管理</button><button class="btn btn-primary btn-sm" onclick="go('diagram')">查看架构图</button></div></div>`}
+function renderSystem(){return `<div class="page-title">系统清单管理</div><div class="card"><div class="tabs">${tabs.map(t=>`<div class="tab${state.tab===t.key?' active':''}" data-tab="${t.key}">${t.label}</div>`).join('')}</div><div class="toolbar"><div class="search-area"><input placeholder="编号"><input placeholder="名称"><select><option>全部类型</option><option>综合办公</option><option>经营管理</option><option>生产运营</option></select><button class="btn btn-default btn-sm">查询</button><button class="btn btn-default btn-sm">重置</button></div><div style="display:flex;gap:8px">${state.role==='admin'?`<button class="btn btn-primary btn-sm" onclick="openAdd()">+ 新增</button><button class="btn btn-default btn-sm">导入</button><button class="btn btn-default btn-sm">导出</button>`:''}</div></div><table><thead><tr><th>编号</th><th>名称</th><th>类型</th><th>属主</th><th>级别</th><th>等保级别</th><th>状态</th><th>操作</th></tr></thead><tbody><tr><td>SYS001</td><td>核心交易系统</td><td><span class="tag tag-blue">生产运营</span></td><td>金融科技部</td><td>核心</td><td>三级</td><td><span class="tag tag-green">已上线</span></td><td>${state.role==='admin'?'<a href="#" onclick="openEdit()">编辑</a> <a href="#" style="color:var(--danger)" onclick="confirmDel()">删除</a>':'<a href="#" onclick="openView()">查看</a>'}</td></tr><tr><td>SYS002</td><td>办公协同平台</td><td><span class="tag tag-blue">综合办公</span></td><td>行政管理部</td><td>重要</td><td>二级</td><td><span class="tag tag-green">已上线</span></td><td>${state.role==='admin'?'<a href="#" onclick="openEdit()">编辑</a> <a href="#" style="color:var(--danger)" onclick="confirmDel()">删除</a>':'<a href="#" onclick="openView()">查看</a>'}</td></tr><tr><td>SYS003</td><td>客户管理系统</td><td><span class="tag tag-blue">经营管理</span></td><td>零售业务部</td><td>一般</td><td>二级</td><td><span class="tag tag-gray">待上线</span></td><td>${state.role==='admin'?'<a href="#" onclick="openEdit()">编辑</a> <a href="#" style="color:var(--danger)" onclick="confirmDel()">删除</a>':'<a href="#" onclick="openView()">查看</a>'}</td></tr></tbody></table><div class="pagination"><button>上一页</button><button class="active">1</button><button>2</button><button>3</button><button>下一页</button></div></div>`}
+function renderTechStack(){return `<div class="page-title">技术栈管理</div><div class="card"><div class="toolbar"><div class="search-area"><input placeholder="编号"><input placeholder="名称"><select><option>全部分类</option><option>前端</option><option>后端</option><option>人工智能</option></select><button class="btn btn-default btn-sm">查询</button></div><div style="display:flex;gap:8px">${state.role==='admin'?`<button class="btn btn-primary btn-sm" onclick="openAdd()">+ 新增</button><button class="btn btn-default btn-sm">导入</button><button class="btn btn-default btn-sm">导出</button>`:''}</div></div><table><thead><tr><th>编号</th><th>分类</th><th>名称</th><th>选型建议</th><th>负责条线</th><th>操作</th></tr></thead><tbody><tr><td>TS001</td><td>前端</td><td>Vue3</td><td><span class="tag tag-green">推荐</span></td><td>应用线</td><td>${state.role==='admin'?'<a href="#" onclick="openEdit()">编辑</a> <a href="#" style="color:var(--danger)" onclick="confirmDel()">删除</a>':'<a href="#" onclick="openView()">查看</a>'}</td></tr><tr><td>TS002</td><td>后端</td><td>Spring Boot</td><td><span class="tag tag-green">推荐</span></td><td>技术平台线</td><td>${state.role==='admin'?'<a href="#" onclick="openEdit()">编辑</a> <a href="#" style="color:var(--danger)" onclick="confirmDel()">删除</a>':'<a href="#" onclick="openView()">查看</a>'}</td></tr></tbody></table></div>`}
+function renderDiagram(){return `<div class="page-title">逻辑部署架构图</div><div class="card"><div class="toolbar"><div class="search-area"><select><option>请选择部署子系统</option><option>核心交易-信创环境</option><option>办公协同-通用环境</option></select><button class="btn btn-default btn-sm">刷新</button></div><div style="display:flex;gap:8px">${state.role==='admin'?`<button class="btn btn-primary btn-sm" onclick="toggleEdit()">编辑模式</button>`:''}</div></div><div class="mermaid-box" id="mermaid-box"><div>此处展示基于 Mermaid 的逻辑部署架构图<br><br>graph LR<br>A[办公网] --> B[NGINX]<br>B --> C[APP服务]<br>C --> D[TDSQL]</div></div><div class="mt-3" style="color:var(--text-aid);font-size:13px">图例：<span style="display:inline-block;width:12px;height:12px;background:#90EE90;border:1px solid #333;vertical-align:middle;margin:0 4px"></span> 当前系统发布单元 <span style="display:inline-block;width:12px;height:12px;background:#E6F7E6;border:1px solid #333;vertical-align:middle;margin:0 4px"></span> 其它系统发布单元</div></div>`}
+function renderRelation(){return `<div class="page-title">发布单元调用关系管理</div><div class="card"><div class="toolbar"><div class="search-area"><select><option>部署子系统</option></select><input placeholder="调用方编号"><input placeholder="被调用方编号"><button class="btn btn-default btn-sm">查询</button></div><div style="display:flex;gap:8px">${state.role==='admin'?`<button class="btn btn-primary btn-sm" onclick="openAdd()">+ 新增</button>`:''}</div></div><table><thead><tr><th>部署子系统</th><th>调用发布单元</th><th>被调用发布单元</th><th>协议</th><th>操作</th></tr></thead><tbody><tr><td>核心交易-信创</td><td>order-service</td><td>pay-service</td><td>HTTP</td><td>${state.role==='admin'?'<a href="#" onclick="openEdit()">编辑</a> <a href="#" style="color:var(--danger)" onclick="confirmDel()">删除</a>':'<a href="#" onclick="openView()">查看</a>'}</td></tr></tbody></table></div>`}
+function renderUser(){return `<div class="page-title">用户权限管理</div><div class="card"><div class="toolbar"><div class="search-area"><input placeholder="用户名"><select><option>全部角色</option><option>超级管理员</option><option>管理员</option><option>普通用户</option></select><button class="btn btn-default btn-sm">查询</button></div><div style="display:flex;gap:8px">${state.role==='admin'?`<button class="btn btn-primary btn-sm" onclick="openAdd()">+ 新增用户</button>`:''}</div></div><table><thead><tr><th>用户名</th><th>角色</th><th>创建时间</th><th>操作</th></tr></thead><tbody><tr><td>admin</td><td><span class="tag tag-red">超级管理员</span></td><td>2025-01-10</td><td><a href="#" onclick="openEdit()">编辑</a></td></tr><tr><td>zhangsan</td><td><span class="tag tag-blue">管理员</span></td><td>2025-02-15</td><td><a href="#" onclick="openEdit()">编辑</a> <a href="#" style="color:var(--danger)" onclick="confirmDel()">删除</a></td></tr><tr><td>lisi</td><td><span class="tag tag-gray">普通用户</span></td><td>2025-03-01</td><td><a href="#" onclick="openView()">查看</a></td></tr></tbody></table></div>`}
+function bindLogin(){$('#btn-login').onclick=()=>{state.page='dashboard';render()}}
+function bindNav(){$('#toggle').onclick=()=>{state.sidebar=!state.sidebar;render()};document.querySelectorAll('.menu-item').forEach(el=>el.onclick=()=>{state.page=el.dataset.key;render()})}
+function go(page){state.page=page;render()}
+function bindActions(){
+  document.querySelectorAll('[data-tab]').forEach(el=>el.onclick=()=>{state.tab=el.dataset.tab;render()});
+  $('#mask').onclick=closeAll;
+  $('#dialog-close').onclick=closeAll;
+  $('#drawer-close').onclick=closeAll;
+}
+function openAdd(){openDialog('新增','<div class="form-item"><label>名称</label><input placeholder="请输入名称"></div><div class="form-item"><label>编号</label><input placeholder="请输入编号"></div><div class="form-item"><label>类型</label><select><option>综合办公</option><option>经营管理</option><option>生产运营</option></select></div>','<button class="btn btn-primary" onclick="closeAll()">保存</button><button class="btn btn-default" onclick="closeAll()">取消</button>')}
+function openEdit(){openDialog('编辑','<div class="form-item"><label>名称</label><input value="核心交易系统"></div><div class="form-item"><label>编号</label><input value="SYS001"></div>','<button class="btn btn-primary" onclick="closeAll()">保存</button><button class="btn btn-default" onclick="closeAll()">取消</button>')}
+function openView(){openDrawer('详情','<div class="form-item"><label>系统编号</label><div>SYS001</div></div><div class="form-item"><label>系统名称</label><div>核心交易系统</div></div><div class="form-item"><label>系统类型</label><div>生产运营</div></div><div class="form-item"><label>系统属主</label><div>金融科技部</div></div><div class="form-item"><label>系统级别</label><div>核心</div></div><div class="form-item"><label>等保级别</label><div>三级</div></div>')}
+function confirmDel(){if(confirm('确定要删除该记录吗？若存在下级数据，系统将禁止删除。'))alert('删除成功（演示）')}
+function toggleEdit(){const box=$('#mermaid-box');box.innerHTML=box.innerHTML==='<div>编辑模式：可拖拽节点调整位置、添加备注说明<br><br>[ 节点A ] --- [ 节点B ]<br><br><button class="btn btn-primary btn-sm" onclick="saveLayout()">保存布局</button></div>'?'<div>此处展示基于 Mermaid 的逻辑部署架构图<br><br>graph LR<br>A[办公网] --> B[NGINX]<br>B --> C[APP服务]<br>C --> D[TDSQL]</div>':'<div>编辑模式：可拖拽节点调整位置、添加备注说明<br><br>[ 节点A ] --- [ 节点B ]<br><br><button class="btn btn-primary btn-sm" onclick="saveLayout()">保存布局</button></div>'}
+function saveLayout(){alert('布局已保存（演示）')}
+function openDialog(title,body,footer){$('#dialog-title').innerText=title;$('#dialog-body').innerHTML=body;$('#dialog-footer').innerHTML=footer;$('#mask').style.display='block';$('#dialog').style.display='flex'}
+function openDrawer(title,body){$('#drawer-title').innerText=title;$('#drawer-body').innerHTML=body;$('#drawer').style.display='flex'}
+function closeAll(){$('#mask').style.display='none';$('#dialog').style.display='none';$('#drawer').style.display='none'}
+render();
+</script>
+</body>
+</html>

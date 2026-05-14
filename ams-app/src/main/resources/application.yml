@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: ams-app
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      logic-delete-field: deletedAt
+      logic-delete-value: 'NULL'
+      logic-not-delete-value: '1970-01-01 00:00:00'
+  mapper-locations: classpath:/mapper/**/*.xml
+
+ams:
+  jwt:
+    secret: ams-default-jwt-secret-key-2025-change-it-in-prod
+    expiration: 86400000

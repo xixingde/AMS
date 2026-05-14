@@ -1,0 +1,50 @@
+- generic [ref=e36]:
+  - complementary [ref=e37]:
+    - generic [ref=e38]: 架构管理系统 AMS
+    - menubar [ref=e39]:
+      - menuitem "首页" [ref=e40] [cursor=pointer]:
+        - img [ref=e42]
+        - text: 首页
+      - menuitem "系统清单" [ref=e45] [cursor=pointer]:
+        - img [ref=e47]
+        - text: 系统清单
+      - menuitem "技术栈管理" [ref=e49] [cursor=pointer]:
+        - img [ref=e51]
+        - text: 技术栈管理
+      - menuitem "逻辑部署架构图" [active] [ref=e56] [cursor=pointer]:
+        - img [ref=e58]
+        - text: 逻辑部署架构图
+      - menuitem "调用关系管理" [ref=e61] [cursor=pointer]:
+        - img [ref=e63]
+        - text: 调用关系管理
+      - menuitem "用户权限" [ref=e65] [cursor=pointer]:
+        - img [ref=e67]
+        - text: 用户权限
+  - generic [ref=e69]:
+    - generic [ref=e70]:
+      - generic [ref=e71]:
+        - img [ref=e73] [cursor=pointer]
+        - navigation "Breadcrumb" [ref=e75]:
+          - generic [ref=e76]:
+            - link "首页" [ref=e77]
+            - text: /
+          - link "Diagram" [ref=e219]
+      - button "admin" [ref=e82] [cursor=pointer]:
+        - text: admin
+        - img [ref=e84]
+    - main [ref=e86]:
+      - generic [ref=e220]: 逻辑部署架构图
+      - generic [ref=e222]:
+        - generic [ref=e223]:
+          - generic [ref=e225] [cursor=pointer]:
+            - generic:
+              - combobox [ref=e227]
+              - generic [ref=e228]: 请选择部署子系统
+            - img [ref=e231]
+          - button "刷新" [ref=e233] [cursor=pointer]:
+            - generic [ref=e234]: 刷新
+          - button "编辑模式" [ref=e235] [cursor=pointer]:
+            - generic [ref=e236]: 编辑模式
+        - generic [ref=e238]:
+          - text: 当前系统发布单元
+          - text: 其它系统发布单元
